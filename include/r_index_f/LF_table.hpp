@@ -89,7 +89,7 @@ public:
         while ((c = heads.get()) != EOF)
         {
             size_t length = 0;
-            lengths.read((char *)&length, 5);
+            lengths.read((char *)&length, 4);
             if (c <= TERMINATOR) c = TERMINATOR;
 
             if (max_run > 0 && length > max_run) {

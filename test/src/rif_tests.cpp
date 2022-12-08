@@ -109,7 +109,6 @@ int main(int argc, char *const argv[])
     parseArgs(argc, argv, args);
 
     verbose("Loading the R-Index-F from B-Table");
-    std::chrono::high_resolution_clock::time_point t_insert_start = std::chrono::high_resolution_clock::now();
 
     r_index_f<> rif;
     std::string filename_rif = args.filename + rif.get_file_extension();
@@ -118,29 +117,20 @@ int main(int argc, char *const argv[])
     rif.load(fs_rif);
     fs_rif.close();
 
-    LF_table table;
-    std::string filename_LF = args.filename + table.get_file_extension();
-
-    ifstream fs_table(filename_LF);
-    table.load(fs_table);
-    fs_table.close();
-
-    std::chrono::high_resolution_clock::time_point t_insert_end = std::chrono::high_resolution_clock::now();
-
-    verbose("R-Index-F load complete");
-    verbose("Memory peak: ", malloc_count_peak());
-    verbose("Elapsed time (s): ", std::chrono::duration<double, std::ratio<1>>(t_insert_end - t_insert_start).count());
-
-    rif.mem_stats();
-    rif.bwt_stats();
-    test_prior_LF(rif, table);
-    verbose("R-Index-F Prior Steps Successful");
-    test_next_LF(rif, table);
-    verbose("R-Index-F Next Steps Successful");
-    test_invert(rif, table);
-    verbose("R-Index-F Inversion Successful");
-    test_idx_samples(rif);
-    verbose("R-Index-F Indices Successful");
+    ifstream patterns(args.filename);
+    std::string p;
+    size_t n = 10000;
+    double tot = 0;
+    for (size_t i = 0; i < n; i++) {
+        patterns >> p;
+        std::chrono::high_resolution_clock::time_point t_start = std::chrono::high_resolution_clock::now();
+        auto c = rif.count(p);
+        std::chrono::high_resolution_clock::time_point t_end = std::chrono::high_resolution_clock::now();
+        double t = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start).count();
+        std::cout << p << "\t" << c << "\t" << t << std::endl;
+        tot += t;
+    }
+    verbose("mean query time (ns): ", tot / n);
 
     return 0;
 }
