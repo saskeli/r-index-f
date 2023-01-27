@@ -134,7 +134,7 @@ int main(int argc, char *const argv[])
     nullstream o_st;
     auto bytes_size = rif.serialize(o_st);
     std::cerr << "mean query time (ns): " << tot / n << std::endl;
-    std::cerr << "bps: " << bytes_size * 8 / rif.size() << std::endl;
+    std::cerr << "bps: " << double(bytes_size * 8) / rif.size() << std::endl;
     verbose("mean query time (ns): ", tot / n);
 
     return 0;
