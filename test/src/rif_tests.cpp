@@ -117,7 +117,7 @@ int main(int argc, char *const argv[])
     rif.load(fs_rif);
     fs_rif.close();
 
-    ifstream patterns(args.filename);
+    ifstream patterns(args.filename + ".patterns");
     std::string p;
     size_t n = 10000;
     double tot = 0;
