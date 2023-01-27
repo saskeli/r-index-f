@@ -54,9 +54,9 @@ public:
 
         std::chrono::high_resolution_clock::time_point t_insert_start = std::chrono::high_resolution_clock::now();
 
-        std::string bwt_fname = filename + ".bwt";
+        std::string bwt_fname = filename + "_RLE";
 
-        std::string bwt_heads_fname = bwt_fname + ".heads";
+        std::string bwt_heads_fname = bwt_fname + ".syms";
         std::ifstream ifs_heads(bwt_heads_fname);
         std::string bwt_len_fname = bwt_fname + ".len";
         std::ifstream ifs_len(bwt_len_fname);
