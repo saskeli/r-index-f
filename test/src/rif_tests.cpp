@@ -130,6 +130,7 @@ int main(int argc, char *const argv[])
         std::cout << p << "\t" << c << "\t" << t << std::endl;
         tot += t;
     }
+    std::cerr << "mean query time (ns): " << tot / n << std::endl;
     verbose("mean query time (ns): ", tot / n);
 
     return 0;
