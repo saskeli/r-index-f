@@ -108,6 +108,7 @@ int main(int argc, char *const argv[])
     Args args;
     parseArgs(argc, argv, args);
 
+    std::cerr << "Loading the R-Index-F from B-Table" << std::endl;
     verbose("Loading the R-Index-F from B-Table");
 
     r_index_f<> rif;
@@ -130,7 +131,10 @@ int main(int argc, char *const argv[])
         std::cout << p << "\t" << c << "\t" << t << std::endl;
         tot += t;
     }
+    nullstream o_st;
+    auto bytes_size = rif.serialize(o_st);
     std::cerr << "mean query time (ns): " << tot / n << std::endl;
+    std::cerr << "bps: " << bytes_size * 8 / rif.size() << std::endl;
     verbose("mean query time (ns): ", tot / n);
 
     return 0;
