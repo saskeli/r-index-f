@@ -120,22 +120,22 @@ int main(int argc, char *const argv[])
 
     ifstream patterns(args.filename + ".patterns");
     std::string p;
-    size_t n = 10000;
     double tot = 0;
-    for (size_t i = 0; i < n; i++) {
-        patterns >> p;
+    size_t i = 0;
+    while (std::getline(patterns, p)) {
         std::chrono::high_resolution_clock::time_point t_start = std::chrono::high_resolution_clock::now();
         auto c = rif.count(p);
         std::chrono::high_resolution_clock::time_point t_end = std::chrono::high_resolution_clock::now();
         double t = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start).count();
         std::cout << p << "\t" << c << "\t" << t << std::endl;
         tot += t;
+        i++;
     }
     nullstream o_st;
     auto bytes_size = rif.serialize(o_st);
-    std::cerr << "mean query time (ns): " << tot / n << std::endl;
+    std::cerr << "mean query time (ns): " << tot / i << std::endl;
     std::cerr << "bps: " << double(bytes_size * 8) / rif.size() << std::endl;
-    verbose("mean query time (ns): ", tot / n);
+    verbose("mean query time (ns): ", tot / i);
 
     return 0;
 }
